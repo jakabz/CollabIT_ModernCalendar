@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+  "id": "0f6f31ed-e263-458c-98b1-aa1ae36951a4",
+  "alias": "ModernCalendarWebPart",
+  "componentType": "WebPart",
+  "version": "*",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": ["SharePointWebPart"],
+
+  "preconfiguredEntries": [{
+    "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+    "group": { "default": "Other" },
+    "title": { "default": "Modern Calendar" },
+    "description": { "default": "Modern Calendar description" },
+    "officeFabricIconFontName": "Calendar",
+    "properties": {
+      "description": "Modern Calendar"
+    }
+  }]
+}
