@@ -8,6 +8,7 @@ export default class ModernCalendar extends React.Component<IModernCalendarProps
 
   public events = ({ date, view }) => view === 'month' && date.getDay() === 0 ? <p>It's Sunday!</p> : null;
   public today = new Date();
+  public click = (value) => alert('New date is: '+value);
 
   public render(): React.ReactElement<IModernCalendarProps> {
     
@@ -17,6 +18,7 @@ export default class ModernCalendar extends React.Component<IModernCalendarProps
         tileContent={this.events}
         value={this.today}
         calendarType="ISO 8601"
+        onChange={this.click}
       />
     );
   }
