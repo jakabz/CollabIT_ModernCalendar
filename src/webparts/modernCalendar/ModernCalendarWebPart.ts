@@ -16,6 +16,10 @@ import * as strings from 'ModernCalendarWebPartStrings';
 import ModernCalendar from './components/ModernCalendar';
 import { IModernCalendarProps } from './components/IModernCalendarProps';
 
+import { SPComponentLoader } from '@microsoft/sp-loader';
+import * as jquery from "jquery";
+import './jalendar/jalendar.min';
+
 export interface IModernCalendarWebPartProps {
   title: string;
   absoluteUrl: string;
@@ -57,7 +61,13 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     if(this.listInit){
       ReactDom.render(element, this.domElement);
       require('./jalendar/jalendar.min.css');
-      require('./jalendarScripts');
+      jquery('#calendar').jalendar({
+          color: window["__themeState__"].theme.bodyFrameBackground,
+          titleColor: window["__themeState__"].theme.themePrimary,
+          weekColor: window["__themeState__"].theme.themeDarkAlt,
+          todayColor: window["__themeState__"].theme.themePrimary,
+          lang: 'EN',
+      });
     }
 
   }

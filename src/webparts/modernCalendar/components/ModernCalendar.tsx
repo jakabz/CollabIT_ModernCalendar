@@ -1,22 +1,13 @@
 import * as React from 'react';
 import styles from './ModernCalendar.module.scss';
 import { IModernCalendarProps } from './IModernCalendarProps';
-import { escape } from '@microsoft/sp-lodash-subset';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
-
-import 'jquery';
-import 'moment';
-
-import '../moment-plugin';
-import '../jalendar/jalendar.min';
-
-
 
 export default class ModernCalendar extends React.Component<IModernCalendarProps, {}> {
   
   private openNewEvent = () => {
     window.open( this.props.absoluteUrl + '/Lists/Events/NewForm.aspx');
-  };
+  }
   private items:any;
 
   public render(): React.ReactElement<IModernCalendarProps> {
@@ -32,7 +23,7 @@ export default class ModernCalendar extends React.Component<IModernCalendarProps
         if(item.EventPage){
           url = item.EventPage;
         } else {
-          url = this.props.absoluteUrl + '/_layouts/15/Event.aspx?ListGuid='+item["@odata.editLink"].split("'")[1]+'&ItemId='+item.Id
+          url = this.props.absoluteUrl + '/_layouts/15/Event.aspx?ListGuid='+item["@odata.editLink"].split("'")[1]+'&ItemId='+item.Id;
         }
         return <div className="added-event" data-date={d5} data-title={item.Title} data-link={url} data-type="event"></div>;
       }}
