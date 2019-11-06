@@ -1,3 +1,5 @@
 export interface IModernCalendarProps {
-  description: string;
+  title: string;
+  absoluteUrl: string;
+  events: any;
 }

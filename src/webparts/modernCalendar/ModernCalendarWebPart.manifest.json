@@ -15,7 +15,7 @@
     "description": { "default": "Modern Calendar description" },
     "officeFabricIconFontName": "Calendar",
     "properties": {
-      "description": "Modern Calendar"
+      "title": "Events Calendar"
     }
   }]
 }

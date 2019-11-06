@@ -1,7 +1,5 @@
 declare interface IModernCalendarWebPartStrings {
-  PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
+  TitleFieldLabel: string;
 }
 
 declare module 'ModernCalendarWebPartStrings' {

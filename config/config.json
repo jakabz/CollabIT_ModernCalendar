@@ -11,7 +11,10 @@
       ]
     }
   },
-  "externals": {},
+  "externals": {
+    "jquery": "https://code.jquery.com/jquery-1.12.4.min.js",
+    "moment": "https://momentjs.com/downloads/moment.min.js"
+  },
   "localizedResources": {
     "ModernCalendarWebPartStrings": "lib/webparts/modernCalendar/loc/{locale}.js"
   }

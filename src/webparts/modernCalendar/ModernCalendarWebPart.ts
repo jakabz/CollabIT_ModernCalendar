@@ -7,25 +7,66 @@ import {
   PropertyPaneTextField
 } from '@microsoft/sp-webpart-base';
 
+import {
+  SPHttpClient,
+  SPHttpClientResponse
+} from '@microsoft/sp-http';
+
 import * as strings from 'ModernCalendarWebPartStrings';
 import ModernCalendar from './components/ModernCalendar';
 import { IModernCalendarProps } from './components/IModernCalendarProps';
 
 export interface IModernCalendarWebPartProps {
-  description: string;
+  title: string;
+  absoluteUrl: string;
+  events: any;
 }
 
 export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModernCalendarWebPartProps> {
+
+  private listResult;
+  private listInit = false;
+
+  public onInit<T>(): Promise<T> {
+    let lastDays = new Date();
+    lastDays.setTime(lastDays.valueOf() - 30 * 24 * 60 * 60 * 1000);
+    let nextDays = new Date();
+    nextDays.setTime(nextDays.valueOf() + 365 * 24 * 60 * 60 * 1000);
+    let query = '';
+    query += '$filter=(EventDate gt \''+lastDays.toISOString()+'\') and (EndDate lt \''+nextDays.toISOString()+'\')&';
+    query += '$top=100&';
+    query += '$orderby=EventDate asc';
+    this._getListData(query).then((response) => {
+      this.listResult = response.value;
+      this.listInit = true;
+      this.render();
+    });
+    return Promise.resolve();
+  }
 
   public render(): void {
     const element: React.ReactElement<IModernCalendarProps > = React.createElement(
       ModernCalendar,
       {
-        description: this.properties.description
+        title: this.properties.title,
+        absoluteUrl: this.context.pageContext.site.absoluteUrl,
+        events: this.listResult
       }
     );
 
-    ReactDom.render(element, this.domElement);
+    if(this.listInit){
+      ReactDom.render(element, this.domElement);
+      require('./jalendar/jalendar.min.css');
+      require('./jalendarScripts');
+    }
+
+  }
+
+  private _getListData(query:string): Promise<any> {
+    return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Events')/Items?` + query, SPHttpClient.configurations.v1)
+      .then((response: SPHttpClientResponse) => {
+        return response.json();
+      });
   }
 
   protected onDispose(): void {
@@ -40,15 +81,11 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
           groups: [
             {
-              groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
+                PropertyPaneTextField('title', {
+                  label: strings.TitleFieldLabel
                 })
               ]
             }

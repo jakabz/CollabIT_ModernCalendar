@@ -16,14 +16,18 @@
     "@microsoft/sp-lodash-subset": "1.9.1",
     "@microsoft/sp-office-ui-fabric-core": "1.9.1",
     "@microsoft/sp-webpart-base": "1.9.1",
+    "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-4.8.4.tgz",
     "@types/es6-promise": "0.0.33",
     "@types/react": "16.8.8",
     "@types/react-dom": "16.8.3",
     "@types/webpack-env": "1.13.1",
+    "jquery": "^1.11.3",
+    "moment": "^2.24.0",
     "office-ui-fabric-react": "6.189.2",
     "react": "16.8.5",
     "react-calendar": "^2.19.2",
-    "react-dom": "16.8.5"
+    "react-dom": "16.8.5",
+    "react-moment": "^0.9.6"
   },
   "resolutions": {
     "@types/react": "16.8.8"
