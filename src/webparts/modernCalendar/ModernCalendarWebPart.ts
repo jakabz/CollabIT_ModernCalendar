@@ -30,6 +30,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
 
   private listResult;
   private listInit = false;
+  private jalendarInit = false;
 
   public onInit<T>(): Promise<T> {
     let lastDays = new Date();
@@ -57,17 +58,19 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
         events: this.listResult
       }
     );
-
     if(this.listInit){
       ReactDom.render(element, this.domElement);
-      require('./jalendar/jalendar.min.css');
-      jquery('#calendar').jalendar({
-          color: window["__themeState__"].theme.bodyFrameBackground,
-          titleColor: window["__themeState__"].theme.themePrimary,
-          weekColor: window["__themeState__"].theme.themeDarkAlt,
-          todayColor: window["__themeState__"].theme.themePrimary,
-          lang: 'EN',
-      });
+      if(!this.jalendarInit){
+        require('./jalendar/jalendar.min.css');
+        jquery('#calendar').jalendar({
+            color: window["__themeState__"].theme.bodyFrameBackground,
+            titleColor: window["__themeState__"].theme.themePrimary,
+            weekColor: window["__themeState__"].theme.themeDarkAlt,
+            todayColor: window["__themeState__"].theme.themePrimary,
+            lang: 'EN',
+        });
+        this.jalendarInit = true;
+      }
     }
 
   }

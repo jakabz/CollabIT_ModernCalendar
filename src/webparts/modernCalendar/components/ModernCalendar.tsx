@@ -29,7 +29,7 @@ export default class ModernCalendar extends React.Component<IModernCalendarProps
       }}
     );
     return (
-      <div className={styles.modernCalendar}>
+      <div id="miniCalendar" className={styles.modernCalendar}>
         <div className={styles.wptitle}>
           <Icon iconName='Calendar' className={styles.wptitleIcon} />
           <span>{this.props.title}</span>
