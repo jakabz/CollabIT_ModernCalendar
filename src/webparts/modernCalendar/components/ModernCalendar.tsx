@@ -2,11 +2,12 @@ import * as React from 'react';
 import styles from './ModernCalendar.module.scss';
 import { IModernCalendarProps } from './IModernCalendarProps';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
+import { IFrameDialog } from "@pnp/spfx-controls-react/lib/IFrameDialog";
 
 export default class ModernCalendar extends React.Component<IModernCalendarProps, {}> {
   
   private openNewEvent = () => {
-    window.open( this.props.absoluteUrl + '/Lists/Events/NewForm.aspx');
+    window.open( this.props.absoluteUrl + '/Lists/Events/NewForm.aspx?source='+this.props.absoluteUrl);
   }
   private items:any;
 

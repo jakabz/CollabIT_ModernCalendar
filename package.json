@@ -17,6 +17,7 @@
     "@microsoft/sp-office-ui-fabric-core": "1.9.1",
     "@microsoft/sp-webpart-base": "1.9.1",
     "@mobiscroll/react": "https://npm.mobiscroll.com/@mobiscroll/react-trial/-/react-trial-4.8.4.tgz",
+    "@pnp/spfx-controls-react": "1.15.0",
     "@types/es6-promise": "0.0.33",
     "@types/react": "16.8.8",
     "@types/react-dom": "16.8.3",
