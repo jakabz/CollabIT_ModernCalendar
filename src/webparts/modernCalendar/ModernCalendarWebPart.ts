@@ -4,7 +4,9 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneDropdown,
+  IPropertyPaneDropdownOption
 } from '@microsoft/sp-webpart-base';
 
 import {
@@ -24,6 +26,7 @@ export interface IModernCalendarWebPartProps {
   title: string;
   absoluteUrl: string;
   events: any;
+  lang: string;
 }
 
 export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModernCalendarWebPartProps> {
@@ -31,6 +34,16 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
   private listResult;
   private listInit = false;
   private jalendarInit = false;
+  private langList = [
+    {
+      key: 'EN',
+      text: 'English'
+    },
+    {
+      key: 'DE',
+      text: 'German'
+    }
+  ];
 
   public onInit<T>(): Promise<T> {
     let lastDays = new Date();
@@ -55,7 +68,8 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
       {
         title: this.properties.title,
         absoluteUrl: this.context.pageContext.site.absoluteUrl,
-        events: this.listResult
+        events: this.listResult,
+        lang: this.properties.lang
       }
     );
     if(this.listInit){
@@ -67,7 +81,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
             titleColor: window["__themeState__"].theme.themePrimary,
             weekColor: window["__themeState__"].theme.themeDarkAlt,
             todayColor: window["__themeState__"].theme.themePrimary,
-            lang: 'EN',
+            lang: this.properties.lang,
         });
         this.jalendarInit = true;
       }
@@ -99,6 +113,10 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
               groupFields: [
                 PropertyPaneTextField('title', {
                   label: strings.TitleFieldLabel
+                }),
+                PropertyPaneDropdown('lang', {
+                  label: strings.LangFieldLabel,
+                  options: this.langList
                 })
               ]
             }

@@ -1,5 +1,6 @@
 define([], function() {
   return {
-    "TitleFieldLabel": "Title"
+    "TitleFieldLabel": "Title",
+    "LangFieldLabel": "Language"
   }
 });
