@@ -24,7 +24,7 @@ export default class ModernCalendar extends React.Component<IModernCalendarProps
         if(item.EventPage){
           url = item.EventPage;
         } else {
-          url = this.props.absoluteUrl + '/_layouts/15/Event.aspx?ListGuid='+item["@odata.editLink"].split("'")[1]+'&ItemId='+item.Id;
+          url = this.props.absoluteUrl + '/_layouts/15/Event.aspx?ListGuid='+item["odata.editLink"].split("'")[1]+'&ItemId='+item.Id;
         }
         return <div className="added-event" data-date={d5} data-title={item.Title} data-link={url} data-type="event"></div>;
       }}

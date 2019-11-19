@@ -17,6 +17,7 @@ import {
 import * as strings from 'ModernCalendarWebPartStrings';
 import ModernCalendar from './components/ModernCalendar';
 import { IModernCalendarProps } from './components/IModernCalendarProps';
+import { sp } from "@pnp/sp";
 
 import { SPComponentLoader } from '@microsoft/sp-loader';
 import * as jquery from "jquery";
@@ -46,6 +47,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
   ];
 
   public onInit<T>(): Promise<T> {
+    /*
     let lastDays = new Date();
     lastDays.setTime(lastDays.valueOf() - 30 * 24 * 60 * 60 * 1000);
     let nextDays = new Date();
@@ -54,8 +56,44 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     query += '$filter=(EventDate gt \''+lastDays.toISOString()+'\') and (EndDate lt \''+nextDays.toISOString()+'\')&';
     query += '$top=100&';
     query += '$orderby=EventDate asc';
+    */
+    let query = '';
+    query += '<Where>';
+    query += '  <And>';
+    query += '    <Lt>';
+    query += '      <FieldRef Name="EventDate" />';
+    query += '      <Value Type="DateTime">';
+    query += '        <Today OffsetDays="365" />';
+    query += '      </Value>';
+    query += '    </Lt>';
+    query += '    <And>';
+    query += '      <Gt>';
+    query += '        <FieldRef Name="EndDate" />';
+    query += '        <Value Type="DateTime">';
+    query += '          <Today OffsetDays="-30" />';
+    query += '        </Value>';
+    query += '      </Gt>';
+    query += '      <Or>';
+    query += '        <IsNull>';
+    query += '          <FieldRef Name="RestrictedAccess"/>';
+    query += '        </IsNull>';
+    query += '        <Or>';
+    query += '          <Eq>';
+    query += '            <FieldRef Name="RestrictedAccess" />';
+    query += '            <Value Type="UserMulti">';
+    query += '              <UserID />';
+    query += '            </Value>';
+    query += '          </Eq>';
+    query += '          <Membership Type="CurrentUserGroups">';
+    query += '            <FieldRef Name="RestrictedAccess"/>';
+    query += '          </Membership>';
+    query += '        </Or>';
+    query += '      </Or>';
+    query += '    </And>';
+    query += '  </And>';
+    query += '</Where>';
     this._getListData(query).then((response) => {
-      this.listResult = response.value;
+      this.listResult = response;
       this.listInit = true;
       this.render();
     });
@@ -90,10 +128,16 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
   }
 
   private _getListData(query:string): Promise<any> {
+    /*
     return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Events')/Items?` + query, SPHttpClient.configurations.v1)
       .then((response: SPHttpClientResponse) => {
         return response.json();
       });
+    */
+    const xml = '<View><Query>'+query+'</Query></View>';  
+    return sp.web.lists.getByTitle('Events').getItemsByCAMLQuery({'ViewXml':xml}).then((res:SPHttpClientResponse) => {
+        return res;
+    });
   }
 
   protected onDispose(): void {
