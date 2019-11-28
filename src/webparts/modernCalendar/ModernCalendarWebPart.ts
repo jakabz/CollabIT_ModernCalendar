@@ -11,6 +11,7 @@ import {
 
 import {
   SPHttpClient,
+  ISPHttpClientOptions,
   SPHttpClientResponse
 } from '@microsoft/sp-http';
 
@@ -93,7 +94,7 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
     query += '  </And>';
     query += '</Where>';
     this._getListData(query).then((response) => {
-      this.listResult = response;
+      this.listResult = response.value;
       this.listInit = true;
       this.render();
     });
@@ -128,16 +129,19 @@ export default class ModernCalendarWebPart extends BaseClientSideWebPart<IModern
   }
 
   private _getListData(query:string): Promise<any> {
-    /*
-    return this.context.spHttpClient.get(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Events')/Items?` + query, SPHttpClient.configurations.v1)
+    const xml = {ViewXml: '<View><Query>'+query+'</Query></View>'};
+    const spOpts: ISPHttpClientOptions = {
+      body: `{}`
+    };
+    return this.context.spHttpClient.post(this.context.pageContext.web.absoluteUrl + `/_api/web/Lists/GetByTitle('Events')/GetItems(query=@v1)?@v1=` + JSON.stringify(xml), SPHttpClient.configurations.v1, spOpts)
       .then((response: SPHttpClientResponse) => {
         return response.json();
       });
-    */
-    const xml = '<View><Query>'+query+'</Query></View>';  
+    /* 
     return sp.web.lists.getByTitle('Events').getItemsByCAMLQuery({'ViewXml':xml}).then((res:SPHttpClientResponse) => {
         return res;
     });
+    */
   }
 
   protected onDispose(): void {
